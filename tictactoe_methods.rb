@@ -127,7 +127,7 @@ class Board
 
     def render
         p = @state
-        system("clear")
+        # system("clear")
         puts ''
         puts ''
         puts ''
@@ -210,6 +210,7 @@ end
 class Computer < Player
 
   def winning_move(overall_status,move)
+    puts "WINNING MOVE"
     overall_status.each do |temp|
       #check for winning move and play winning move
       if temp.count(self.piece) == 2
@@ -228,6 +229,7 @@ class Computer < Player
 
 
   def block(overall_status,move)
+    puts "BLOCK"
     group = []
     #check for opponent winning position and block
     overall_status.each do |temp|
@@ -248,6 +250,7 @@ class Computer < Player
 
 
   def fork_move(overall_status, move, piece, opponent_piece)
+    puts "FORK_MOVE"
     forks = []
     positions = []
     possible =[]
@@ -278,33 +281,18 @@ class Computer < Player
     end
 
     if possible.empty?
+      puts "Here is the move from fork_move #{move}"
       return move
     else
-      return possible
+      puts "Here is the move form fork_move #{possible.first}"
+      return possible.first
     end
 
-    #
-    # possible = positions.detect{ |e| positions.count(e) > 1 }
-    # if possible == nil
-    # else move = possible
-    # end
-    # if temp.length > 1
-    #   puts "This is temp #{temp}"
-    #   empty_space_1 = temp[0][0]
-    #   puts "empty_space_1 is #{empty_space_1}"
-    #   empty_space_2 = temp[0][1]
-    #   puts "empty_space_2 is #{empty_space_2}"
-    #     if temp[1].include?(empty_space_1)
-    #       move = empty_space_1
-    #     elsif temp[1].include?(empty_space_2)
-    #       move = empty_space_2
-    #     end
-    # end
-    puts "Here is the move from fork move #{move}"
-    return move
   end
 
-  def create_two_in_a_row(overall_status, move)
+
+  def create_two_in_a_row(overall_status, move, piece, opponent_piece)
+    puts "CREATE_TWO_IN_A_ROW"
     possible_two_in_a_row = []
     positions = []
     #if there is an empty location that creates a two-in-a row for me(thus forcing opponent to block), play in that location
@@ -320,48 +308,101 @@ class Computer < Player
         positions.push(n)
       end
     end
-    puts "Here are possible positions before deleting #{positions}"
+    # puts "Here are possible two_in_a_row positions before deleting #{positions}"
 
     positions = positions - [piece]
-    positions = positions - [move]
-    puts "Here are the possible positions #{positions}"
-    if positions.empty?
-      return move
-    else
-      move = positions[0]
-    end
-    puts "Here is move from fork_block #{move}"
-    return move
+    # positions = positions - [move]
+    # puts "Here are the possible two_in_a_row positions #{positions}"
+    return positions
 
   end
 
   def fork_block(overall_status, move, piece, opponent_piece)
+    puts "FORK_BLOCK"
+    forks = []
+    positions = []
+    possible =[]
+    puts "Here is overall_status in fork_block #{overall_status}"
+    puts "Here is the piec I'm deleting this fork_block cycle #{opponent_piece}"
+    puts "The other piece is #{piece}"
+    overall_status.each do |temp|
+      if temp.count(opponent_piece) == 1 && temp.include?(piece) == false
+        group = temp - [opponent_piece]
+          forks.push(group)
+      end
+    end
+    puts "Here is the temp array from fork_block #{forks}"
+
+    forks.each do |element|
+      element.each do |n|
+        positions.push(n)
+      end
+    end
+    puts "Here are the positions in fork_block #{positions}"
+
+    #construct an array of possible fork moves...possible fork moves are any repeats in the array
+    for x in (1..9) do
+      num = positions.count(x)
+        # puts "The count for #{x} is #{num}"
+      if num > 1
+        possible.push(x)
+      end
+
+    end
+      puts "Here are the possible fork block moves #{possible}"
+
+    if possible.length == 1
+      #If there is only one possible fork for the opponent, the player should block it.
+      move = possible.first
+      puts "This is move from possible.first #{move}"
+      return move
+    elsif possible.length > 1
+      # Otherwise, the player should block any forks in any way that simultaneously allows them to create two in a row...
+      #the following function call finds possible two_in_a_row moves
+      two_in_a_row = create_two_in_a_row(overall_status, move, piece, opponent_piece)
+      puts "Here are the two_in_a_row moves #{two_in_a_row}"
+      puts "Here is move after two_in_a_row is called #{move}"
+    else
+      puts "Here is move from fork_block...should be nothing #{move}"
+      return move
+    end
 
 
+  # The following loop compares two_in_a_row and possible arrays.  If there are matches, move becomes that match.
+    # possible.each do |poss|
+    #   if two_in_a_row.include?(poss)
+    #     move = poss
+    #     puts "This is the move from two_in_a_row and possible comparison #{move}"
+    #     return move
+    #   else
+    #   end
+    # end
 
 
+  # Otherwise, the player should block any forks in any way that simultaneously allows them to create two in a row...
+    #delete the fork_block moves from the possible moves
+    possible.each do |num|
+      if two_in_a_row.include?(num)
+        puts "This is two_in_a_row when comparing to possible fork_block moves #{two_in_a_row}"
+        move = num
+        two_in_a_row = two_in_a_row - [num]
+      end
+      puts "This is two_in_a_row after deleting the possible fork_block moves #{two_in_a_row}"
+    end
 
+    # puts "This is move #{move}"
+    # if move == nil
+    #   return move
+    # end
 
-
-    move = fork_move(overall_status, move, opponent_piece, piece)
-
-    puts "Move coming from block_fork is #{move}"
-
-
-
-
-
-
-
+    puts "This is two_in_a_row without possible fork_block moves #{two_in_a_row}"
+    move = two_in_a_row.sample
+    return move
 
   end
 
-
-
-
-
-
   def play_center(board,move)
+    puts "PLAY_CENTER"
     puts "This is the board from play_center #{board}"
     if board[4] == 5
       move = 5
@@ -370,7 +411,7 @@ class Computer < Player
   end
 
   def play_opposite_corner(board,move, piece, opponent_piece)
-
+    puts "PLAY_OPPOSITE_CORNER"
     corner_opposites = [[0,9],[2,7],[8,1],[6,3]]
     corner_opposites.each do |pair|
     puts "Board corner status is #{board[pair[0]]}"
@@ -385,7 +426,33 @@ class Computer < Player
     return move
   end
 
+  def empty_corner(board, move)
+    puts "EMPTY_CORNER"
+    corners = [0, 2, 6, 8]
+    corners.each do |corner|
+      if board[corner] == corner + 1
+        move = corner + 1
+      end
+    end
+    puts "This is move from empty_corner #{move}"
+    return move
+  end
+
+
+  def empty_edge(board, move)
+    puts "EMPTY_EDGE"
+    edges = [1, 3, 5, 7]
+    edges.each do |edge|
+      if board[edge] == edge + 1
+        move = edge + 1
+      end
+    end
+    puts "This is move form empty_edge #{move}"
+    return move
+  end
+
   def random_move(board,move)
+    puts "RANDOM_MOVE"
       board.delete(@opponent_piece)
       board.delete(self.piece)
       move = board.sample
@@ -449,6 +516,12 @@ class Computer < Player
       if move == ""
         move = play_opposite_corner(board, move, self.piece, @opponent_piece)
       end
+
+      if move == ""
+        move = empty_corner(board, move)
+      end
+
+
 
       if move == ""
         move = random_move(board,move)
