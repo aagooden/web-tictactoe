@@ -450,6 +450,7 @@ class Computer < Player
     puts "This is move form empty_edge #{move}"
     return move
   end
+  
 
   def random_move(board,move)
     puts "RANDOM_MOVE"
@@ -492,42 +493,30 @@ class Computer < Player
           overall_status.push(temp)
       end
 
-
-      if move == ""
-        move = winning_move(overall_status, move)
+    # These method calls, call each individual method that makes up the "unbeatable" strategy for the computer
+    # The results of these calls are actually in the methods array...not the method calls themselves.
+    # This eliminates multiple if statements.
+    methods = [
+      winning_move(overall_status, move),
+      block(overall_status, move),
+      fork_move(overall_status, move, self.piece, @opponent_piece),
+      fork_block(overall_status, move, self.piece, @opponent_piece),
+      play_center(board,move),
+      play_opposite_corner(board, move, self.piece, @opponent_piece),
+      empty_corner(board, move)
+              ]
+      methods.each do |m|
+        if m == ""
+          puts "#{m} returns nothing"
+        else
+          puts "#{m} returns something"
+          move = m
+          break
+        end
       end
 
-      if move == ""
-        move = block(overall_status, move)
-      end
-
-      if move == ""
-        move = fork_move(overall_status, move, self.piece, @opponent_piece)
-      end
-
-      if move == ""
-        move = fork_block(overall_status, move, self.piece, @opponent_piece)
-      end
-
-      if move == ""
-        move = play_center(board,move)
-      end
-
-      if move == ""
-        move = play_opposite_corner(board, move, self.piece, @opponent_piece)
-      end
-
-      if move == ""
-        move = empty_corner(board, move)
-      end
-
-
-
-      if move == ""
-        move = random_move(board,move)
-      end
-
-  return move
+    puts "Here is the final move return #{move}"
+    return move
 
 
   end
