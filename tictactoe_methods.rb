@@ -49,7 +49,7 @@ class Game
     @board.state
   end
 
-  def play(player_move)
+  def play(current_move)
       @board.render
       player = ""
       # loop do
@@ -75,7 +75,7 @@ class Game
 									# z=gets.chomp
 							else
                 # puts "#{player.name}, enter the number of the position where you would like to play."
-                position = player_move
+                position = current_move
                 position = position.to_i
 							end
             # if @board.check(position)
@@ -92,6 +92,8 @@ class Game
 
           @board.render
           @turn = !@turn
+
+        return player.class
 
       #
       #     if player.check_winner == true

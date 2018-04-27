@@ -25,16 +25,22 @@ post '/play' do
 end
 
 get '/game' do
-	@@game = Game.new(session[:number_of_players], session[:player1], session[:player2], session[:difficulty])
-	session[:board_state] = @@game.board_state
+	$game = Game.new(session[:number_of_players], session[:player1], session[:player2], session[:difficulty])
+	session[:board_state] = $game.board_state
 	puts "Here is session[:board_state] #{session[:board_state]}"
 	# game.play
 	erb :board
 end
 
 get '/move' do
-	session[:move] = params[:move]
-	@@game.play(session[:move])
-	session[:board_state] = @@game.board_state
+	current_move = params[:move]
+	puts "The current move is #{current_move}"
+	player_class = $game.play(current_move)
+	session[:board_state] = $game.board_state
+	if player_class == Computer
+	else
+		$game.play(current_move)
+	end
+	puts "The current board_state is #{session[:board_state]}"
 	erb :board
 end
