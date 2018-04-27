@@ -28,7 +28,6 @@ get '/game' do
 	$game = Game.new(session[:number_of_players], session[:player1], session[:player2], session[:difficulty])
 	session[:board_state] = $game.board_state
 	puts "Here is session[:board_state] #{session[:board_state]}"
-	# game.play
 	erb :board
 end
 
