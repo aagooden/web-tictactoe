@@ -1,36 +1,55 @@
-<%= @state %>
+<% images = [] %>
+<%session[:board_state].each do |position| %>
+<%if position.is_a?Integer %>
+  <%images.push("blank.jpg") %>
+<%elsif position == "X" %>
+  <%images.push("x.png") %>
+<%elsif position == "O" %>
+  <%images.push("o.png") %>
+<%end %>
+<%end %>
 
 <div class="grid-container">
-  <div class="item1">
-    <img src="x.png" style="width:100px;height:100px;">
+  <div class="item1" onclick="playerMove(1)">
+    <img src="<%= images[0] %>" style="width:100px;height:100px;">
     </div>
-    <div class="item2" id="blank">
+    <div class="item2">
+    <img src="<%= images[1] %>" style="width:100px;height:100px;">
     </div>
 
   <div class="item3">
+    <img src="<%= images[2] %>" style="width:100px;height:100px;">
   </div>
 
   <div class="item4">
-    <img src="o.png" style="width:100px;height:100px;">
+    <img src="<%= images[3] %>" style="width:100px;height:100px;">
   </div>
 
   <div class="item5">
-    <img src="x.png" style="width:100px;height:100px;">
+    <img src="<%= images[4] %>" style="width:100px;height:100px;">
   </div>
 
   <div class="item6">
-    <img src="o.png" style="width:100px;height:100px;">
+    <img src="<%= images[5] %>" style="width:100px;height:100px;">
   </div>
 
   <div class="item7">
-    <img src="x.png" style="width:100px;height:100px;">
+    <img src="<%= images[6] %>" style="width:100px;height:100px;">
   </div>
 
   <div class="item8">
-    <img src="x.png" style="width:100px;height:100px;">
+    <img src="<%= images[7] %>" style="width:100px;height:100px;">
   </div>
 
   <div class="item9">
-    <img src="x.png" style="width:100px;height:100px;">
+    <img src="<%= images[8] %>" style="width:100px;height:100px;">
   </div>
 </div>
+
+
+
+<script>
+function playerMove(move) {
+  window.location = "/move?move=" + move;
+}
+</script>

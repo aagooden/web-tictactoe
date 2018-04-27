@@ -43,20 +43,23 @@ class Game
         # puts "3 = Unbeatable Opponent"
         @difficulty = difficulty
       end
-
   end
 
-  def play
+  def board_state
+    @board.state
+  end
+
+  def play(player_move)
       @board.render
       player = ""
-      loop do
+      # loop do
           if @turn == true
               player = @player1
           else
               player = @player2
           end
 
-          loop do
+          # loop do
 						# p "The class of player is #{player.class}"
 							if player.class == Computer
                 # puts "The difficulty level is #{@difficulty}"
@@ -68,57 +71,57 @@ class Game
                     position = player.move(@board.state)
                   end
 
-									puts "The Computer's move is position #{position}"
-									z=gets.chomp
+									# puts "The Computer's move is position #{position}"
+									# z=gets.chomp
 							else
-                puts "#{player.name}, enter the number of the position where you would like to play."
-                position = gets.chomp
+                # puts "#{player.name}, enter the number of the position where you would like to play."
+                position = player_move
                 position = position.to_i
 							end
-            if @board.check(position)
+            # if @board.check(position)
                 @board.change_state(player.piece, position)
                 player.update_positions(position)
                 # puts "Positions = #{player.positions}"
-            break
-            else
-                puts "That position is occupied...try again!"
-                puts "Press Enter to continue..."
-                gets.chomp
-            end
-          end
+            # break
+            # else
+            #     puts "That position is occupied...try again!"
+            #     puts "Press Enter to continue..."
+            #     gets.chomp
+            # end
+          # end
 
           @board.render
           @turn = !@turn
 
-
-          if player.check_winner == true
-              puts "Congratulations #{player.name}, you WIN!!!!!"
-              player.increase_score
-              break
-          elsif @board.check_tie
-              puts "That one was a tie!"
-              break
-          end
-      end
-          puts "The current score is..."
-          puts ""
-          puts "#{@player1.name}: #{@player1.score}"
-          puts "#{@player2.name}: #{@player2.score}"
-          puts ""
-          puts "Would you like to play again? (y or n)"
-      loop do
-          again = gets.chomp
-
-          if again == "n"
-              break
-          elsif again == "y"
-              @board = Board.new
-              @player1.positions=([])
-              @player2.positions=([])
-              play
-          end
-          break
-      end
+      #
+      #     if player.check_winner == true
+      #         puts "Congratulations #{player.name}, you WIN!!!!!"
+      #         player.increase_score
+      #         break
+      #     elsif @board.check_tie
+      #         puts "That one was a tie!"
+      #         break
+      #     end
+      # end
+      #     puts "The current score is..."
+      #     puts ""
+      #     puts "#{@player1.name}: #{@player1.score}"
+      #     puts "#{@player2.name}: #{@player2.score}"
+      #     puts ""
+      #     puts "Would you like to play again? (y or n)"
+      # loop do
+      #     again = gets.chomp
+      #
+      #     if again == "n"
+      #         break
+      #     elsif again == "y"
+      #         @board = Board.new
+      #         @player1.positions=([])
+      #         @player2.positions=([])
+      #         play
+      #     end
+      #     break
+      # end
 
 
   end
