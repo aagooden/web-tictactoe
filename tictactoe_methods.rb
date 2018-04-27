@@ -2,127 +2,126 @@
 
 class Game
 
-    def initialize
-        @board = Board.new
-        system("clear")
+  def initialize(number_of_players, player1, player2, difficulty)
+      @board = Board.new
+      # system("clear")
 
-        puts "How many players?"
-        @number_of_players = gets.chomp
+      # puts "How many players?"
+      @number_of_players = number_of_players
+      #
+      #
+      #
+      # puts "Hello player 1.  What is your name?"
+      # player1 = gets.chomp
+      # puts "Thank you #{player1}, you will be X's"
+      # puts ""
+      # puts ""
+      @player1 = Player.new(player1, "X", @board)
 
+      if @number_of_players == "2"
 
+        # puts "Hello player 2.  What is your name?"
+        # player2 = gets.chomp
+        # @player2 = Computer.new(player2, "O", @board)
+        @player2 = Player.new(player2, "O", @board)
+        # puts "Hello #{player2}, you will be O's"
+        # puts ""
+        # puts "Press Enter to start the game"
+        # gets.chomp
+        @turn = true
+      else
+        player2 = "Computer"
+        @player2 = Computer.new(player2, "O", @board)
+        # puts "The Computer will be O's"
+        # puts ""
+        # puts "Press Enter to start the game"
+        # gets.chomp
+        @turn = true
+        # puts "What level of difficlty would you like?"
+        # puts "1 = Random Opponent"
+        # puts "2 = Sequential Opponent"
+        # puts "3 = Unbeatable Opponent"
+        @difficulty = difficulty
+      end
 
-        puts "Hello player 1.  What is your name?"
-        player1 = gets.chomp
-        puts "Thank you #{player1}, you will be X's"
-        puts ""
-        puts ""
-        @player1 = Player.new(player1, "X", @board)
+  end
 
-        if @number_of_players == "2"
+  def play
+      @board.render
+      player = ""
+      loop do
+          if @turn == true
+              player = @player1
+          else
+              player = @player2
+          end
 
-          puts "Hello player 2.  What is your name?"
-          player2 = gets.chomp
-          # @player2 = Computer.new(player2, "O", @board)
-          @player2 = Player.new(player2, "O", @board)
-          puts "Hello #{player2}, you will be O's"
-          puts ""
-          puts "Press Enter to start the game"
-          gets.chomp
-          @turn = true
-        else
-          player2 = "Computer"
-          @player2 = Computer.new(player2, "O", @board)
-          puts "The Computer will be O's"
-          puts ""
-          puts "Press Enter to start the game"
-          gets.chomp
-          @turn = true
+          loop do
+						# p "The class of player is #{player.class}"
+							if player.class == Computer
+                # puts "The difficulty level is #{@difficulty}"
+                  if @difficulty == "1"
+                    position = player.random_move(@board.state, @player2.piece, @player1.piece)
+                  elsif @difficulty == "2"
+                    position = player.sequential_move(@board.state, @player2.piece, @player1.piece)
+                  elsif @difficulty == "3"
+                    position = player.move(@board.state)
+                  end
 
-          puts "What level of difficlty would you like?"
-          puts "1 = Random Opponent"
-          puts "2 = Sequential Opponent"
-          puts "3 = Unbeatable Opponent"
-          @difficulty = gets.chomp
-        end
-
-    end
-
-    def play
-        @board.render
-        player = ""
-        loop do
-            if @turn == true
-                player = @player1
-            else
-                player = @player2
-            end
-
-            loop do
-							# p "The class of player is #{player.class}"
-											if player.class == Computer
-                        # puts "The difficulty level is #{@difficulty}"
-                          if @difficulty == "1"
-                            position = player.random_move(@board.state, @player2.piece, @player1.piece)
-                          elsif @difficulty == "2"
-                            position = player.sequential_move(@board.state, @player2.piece, @player1.piece)
-                          elsif @difficulty == "3"
-                            position = player.move(@board.state)
-                          end
-
-  												puts "The Computer's move is position #{position}"
-  												z=gets.chomp
-  										else
-				                puts "#{player.name}, enter the number of the position where you would like to play."
-				                position = gets.chomp
-				                position = position.to_i
-											end
-                if @board.check(position)
-                    @board.change_state(player.piece, position)
-                    player.update_positions(position)
-                    # puts "Positions = #{player.positions}"
-                break
-                else
-                    puts "That position is occupied...try again!"
-                    puts "Press Enter to continue..."
-                    gets.chomp
-                end
-            end
-
-            @board.render
-            @turn = !@turn
-
-
-            if player.check_winner == true
-                puts "Congratulations #{player.name}, you WIN!!!!!"
-                player.increase_score
-                break
-            elsif @board.check_tie
-                puts "That one was a tie!"
-                break
-            end
-        end
-            puts "The current score is..."
-            puts ""
-            puts "#{@player1.name}: #{@player1.score}"
-            puts "#{@player2.name}: #{@player2.score}"
-            puts ""
-            puts "Would you like to play again? (y or n)"
-        loop do
-            again = gets.chomp
-
-            if again == "n"
-                break
-            elsif again == "y"
-                @board = Board.new
-                @player1.positions=([])
-                @player2.positions=([])
-                play
-            end
+									puts "The Computer's move is position #{position}"
+									z=gets.chomp
+							else
+                puts "#{player.name}, enter the number of the position where you would like to play."
+                position = gets.chomp
+                position = position.to_i
+							end
+            if @board.check(position)
+                @board.change_state(player.piece, position)
+                player.update_positions(position)
+                # puts "Positions = #{player.positions}"
             break
-        end
+            else
+                puts "That position is occupied...try again!"
+                puts "Press Enter to continue..."
+                gets.chomp
+            end
+          end
+
+          @board.render
+          @turn = !@turn
 
 
-    end
+          if player.check_winner == true
+              puts "Congratulations #{player.name}, you WIN!!!!!"
+              player.increase_score
+              break
+          elsif @board.check_tie
+              puts "That one was a tie!"
+              break
+          end
+      end
+          puts "The current score is..."
+          puts ""
+          puts "#{@player1.name}: #{@player1.score}"
+          puts "#{@player2.name}: #{@player2.score}"
+          puts ""
+          puts "Would you like to play again? (y or n)"
+      loop do
+          again = gets.chomp
+
+          if again == "n"
+              break
+          elsif again == "y"
+              @board = Board.new
+              @player1.positions=([])
+              @player2.positions=([])
+              play
+          end
+          break
+      end
+
+
+  end
 end
 
 
@@ -156,7 +155,7 @@ class Board
 
     def render
         p = @state
-        system("clear")
+        # system("clear")
         puts ''
         puts ''
         puts ''
@@ -647,5 +646,5 @@ class Computer < Player
 
 end
 
-p = Game.new
-p.play
+# p = Game.new
+# p.play
