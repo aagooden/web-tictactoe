@@ -32,6 +32,8 @@ class Game
       else
         player2 = "Computer"
         @player2 = Computer.new(player2, "O", @board)
+        puts "This is where @player2 is assigned to computer"
+        puts "This is @player2.name #{@player2.name}"
         # puts "The Computer will be O's"
         # puts ""
         # puts "Press Enter to start the game"
@@ -49,8 +51,12 @@ class Game
     @board.state
   end
 
+  def turn
+    @turn
+  end
+
   def play(current_move)
-      @board.render
+      # @board.render
       player = ""
       # loop do
           if @turn == true
@@ -77,8 +83,15 @@ class Game
                 # puts "#{player.name}, enter the number of the position where you would like to play."
                 position = current_move
                 position = position.to_i
+                puts "From methods This is the position coming from route #{position}"
 							end
             # if @board.check(position)
+
+
+
+
+
+
                 @board.change_state(player.piece, position)
                 player.update_positions(position)
                 # puts "Positions = #{player.positions}"
@@ -89,21 +102,40 @@ class Game
             #     gets.chomp
             # end
           # end
-
           @board.render
           @turn = !@turn
 
-        return player.class
+
+          if player.check_winner == true
+              # puts "Congratulations #{player.name}, you WIN!!!!!"
+              player.increase_score
+
+              return player.name, @player1.name, @player1.score, @player2.name, @player2.score, "winner"
+          elsif @board.check_tie
+            return player.name, @player1.name, @player1.score, @player2.name, @player2.score, "tie"
+              # puts "That one was a tie!"
+              # break
+          end
+
+          return player.name, @player1.name, @player1.score, @player2.name, @player2.score, "none"
+
+  end
+
+  def play_again
+    @board = Board.new
+    @player1.positions=([])
+    @player2.positions=([])
+  end
 
       #
-      #     if player.check_winner == true
-      #         puts "Congratulations #{player.name}, you WIN!!!!!"
-      #         player.increase_score
-      #         break
-      #     elsif @board.check_tie
-      #         puts "That one was a tie!"
-      #         break
-      #     end
+          # if player.check_winner == true
+          #     puts "Congratulations #{player.name}, you WIN!!!!!"
+          #     player.increase_score
+          #     break
+          # elsif @board.check_tie
+          #     puts "That one was a tie!"
+          #     break
+          # end
       # end
       #     puts "The current score is..."
       #     puts ""
@@ -125,8 +157,6 @@ class Game
       #     break
       # end
 
-
-  end
 end
 
 
@@ -142,8 +172,10 @@ class Board
 		end
 
     def change_state(piece, position)
+      puts "Here is @state at beginning of change_state #{@state}"
+      puts "Here is where error occurs... position is #{position}"
         @state[position-1] = piece
-        # puts "The state in change state is now #{@state}"
+        puts "The state in change state is now #{@state}"
     end
 
     def check(position)
@@ -179,14 +211,6 @@ class Board
 
 end
 
-
-test = Board.new
-puts test
-p test.state
-
-answer = test.state.include?(3)
-
-puts answer
 class Player
 
     attr_accessor :name, :piece

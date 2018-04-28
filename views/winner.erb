@@ -1,0 +1,13 @@
+<h3>Way to go!!!</h3>
+
+<h2>The winner is<%= session[:winner] %></h2>
+
+<h3>The score is</h3>
+
+<h2><%=session[:player1_name]%>: <%=session[:player1_score]%></h2><br>
+
+<h2><%=session[:player2_name]%>: <%=session[:player2_score]%></h2>
+
+<form class="" action="again" method="post">
+  <input type="submit" name="" value="Play Again">
+</form>
