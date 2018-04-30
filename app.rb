@@ -27,6 +27,7 @@ end
 get '/game' do
 	$game = Game.new(session[:number_of_players], session[:player1], session[:player2], session[:difficulty])
 	session[:board_state] = $game.board_state
+	puts "Here is the board_state you were looking for #{session[:board_state]}"
 	erb :board
 end
 
@@ -40,9 +41,7 @@ get '/move' do
 	puts "Step 4, update board_state with the game board state which is #{$game.board_state}"
 	session[:board_state] = $game.board_state
 
-	puts "From app /move This is player array before checking for winner #{player}"
-	puts "player[5] is #{player[5]}"
-	puts "If player[5] is winner, send to erb:winner"
+#If last move created a winner or a tie, redirect to /winner
 	if player[5] == "winner" || player[5] == "tie"
 		session[:winner] = player[0]
 		session[:player1_name] = player[1]
@@ -54,12 +53,17 @@ get '/move' do
 
 
 	if player[0] == "Computer"
+	elsif Player && player[0] != "Computer" && $game.player2_class == Player
+		puts "This is where player2 is human and NOT the computer...should go to erb :board at this point"
+		erb :board
 	else
-		puts "If player[0] didnt equal Computer, go back through game.play with current move"
+		puts "If player[0] was not equal Computer, go back through game.play with current move"
 		player = $game.play(current_move)
+		erb :board
 	end
 
-puts "if player[5] is winner, send to erb:winner "
+
+#If last move created a winner or a tie, redirect to /winner
 	if player[5] == "winner" || player[5] == "tie"
 		session[:winner] = player[0]
 		session[:player1_name] = player[1]
@@ -68,33 +72,30 @@ puts "if player[5] is winner, send to erb:winner "
 		session[:player2_score] = player[4]
 		redirect "/winner"
 	end
-
-	puts "From app /move The current board_state is #{session[:board_state]}"
-	puts "sending to erb:board to render board"
 	erb :board
 end
+
 
 get "/winner" do
 	erb :winner
 end
 
+
 post "/again" do
-	puts "This is $game.turn #{$game.turn}"
-	if $game.turn == false #means the last player to play was human
-			puts "test 1111111111"
-
-
+	#Check that player2 is Computer AND player1 went last
+	if $game.player2_class == Computer && $game.turn == false
+		puts "Player2 is class Computer and player1 went las...game.turn is equal to false"
 		$game.play_again
-			puts "test 2222222222"
-		session[:board_state] = [1,2,3,4,5,6,7,8,9]
-		puts "test 33333333333"
-		$game.play(10)
-		puts "test 4444444444"
-	else #if last person was computer
-	session[:board_state] = [1,2,3,4,5,6,7,8,9]
-	$game.play_again
-	erb :board
+		session[:board_state] = $game.board_state
+		$game.play(10) #10 is just a placeholder for calling $game.play
+		erb :board
+	else
+		$game.play_again
+		session[:board_state] = $game.board_state
+		erb :board
+	end
 end
-session[:board_state] = $game.board_state
-erb :board
+
+get "/again" do
+	erb :board
 end

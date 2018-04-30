@@ -20,7 +20,7 @@ h3 {
   font-family: serif;
   font-size: 2vw;
   font-weight: bold;
-  color: green;
+  color: black;
       text-shadow:
     -1px -1px 0 #000,
     1px -1px 0 #000,
@@ -62,18 +62,18 @@ h1 {
 
 input[type="submit"] {
   display: inline-block;
-  background-color: green;
+  background-color: blue;
   color: #fff;
   text-transform: uppercase;
   font-weight: bold;
-  font-size: 4vw;
+  font-size: 2vw;
   text-decoration: none;
   padding: 12px 20px;
-  border-radius: 100px;
+  border-radius: 10px;
   transition: background-color 200ms ease-in-out;
   letter-spacing: 0.05em;
   border: none;
-  margin-top: 5%;
+  margin-top: 2%;
 }
 a:hover,
 a:focus,
@@ -151,7 +151,7 @@ div.cheese {
 
 
 }
-
+/*
 img.top {
   border-radius: 2px;
   border-right: solid 2px black;
@@ -159,7 +159,7 @@ img.top {
   border-bottom: solid 2px black;
   border-left: solid 2px black;
   width:90%;height:75%;
-}
+} */
 
 /* img {
   border-radius: 2px;
@@ -204,27 +204,32 @@ li a:hover:not(.active) {
 .grid-container {
   display: grid;
   grid-template-columns: auto auto auto;
-  grid-gap: 5px;
-  background-color: black;
-  padding: 5px;
+  grid-template-rows: auto auto auto;
+  /* grid-gap: 0px; */
+  /* background-color: white; */
+  /* padding: 5px; */
 
   /* border-radius: 25px; */
-  margin-left: 5%;
-  margin-right: 5%;
+  /* margin-left: 5%; */
+  /* margin-right: 5%; */
+  /* width: 90%;
+  height: 90%; */
+    justify-content: center;
 
 }
 .grid-container > div {
   background-color: white;
-  text-align: center;
-  padding: 5px 0;
+  /* text-align: center; */
+  /* padding: 5px 0; */
   font-size: 20px;
-  border-right: solid 2px black;
+  /* border-right: solid 2px white;
   border-top: solid 2px black;
   border-bottom: solid 2px black;
   border-left: solid 2px black; */
-  width: 200px;
-  height: 200px
-  align-items: auto;
+  width: 150px;
+  height: 150px;
+  /* align-items: auto; */
+  justify-content: space-evenly;
   /* border-radius: 25px;
 }
 

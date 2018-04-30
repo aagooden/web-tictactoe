@@ -55,6 +55,10 @@ class Game
     @turn
   end
 
+  def player2_class
+    @player2.class
+  end
+
   def play(current_move)
       # @board.render
       player = ""
@@ -64,7 +68,8 @@ class Game
           else
               player = @player2
           end
-
+puts "The player from play method is #{player.name}"
+puts "The player piece from play method is #{player.piece}"
           # loop do
 						# p "The class of player is #{player.class}"
 							if player.class == Computer
@@ -86,12 +91,8 @@ class Game
                 puts "From methods This is the position coming from route #{position}"
 							end
             # if @board.check(position)
-
-
-
-
-
-
+            puts "The player right before change state is #{player.name}"
+            puts "The player piece right before change state is #{player.piece}"
                 @board.change_state(player.piece, position)
                 player.update_positions(position)
                 # puts "Positions = #{player.positions}"
