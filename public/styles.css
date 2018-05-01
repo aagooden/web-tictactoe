@@ -1,12 +1,13 @@
 
 body {
-  background-color: white;
-  font-family: "Helvetica", Ari
-  al, sans-serif;
-  /* font-family: 'Jacques Francois';font-size: 22px; */
-  padding: 1%;
+  background-image: url("/white_tictactoe.jpg");
+  background-repeat:no-repeat;
+  background-position:center;
+  background-attachment: fixed;
+  background-color: black;
+  font-family: "Helvetica", Arial, sans-serif;
+  padding: 0.5%;
   text-align: center;
-  color: #333;
   font-size: 30px;
   background-repeat: no-repeat;
   background-size: 100%;
@@ -73,7 +74,8 @@ input[type="submit"] {
   transition: background-color 200ms ease-in-out;
   letter-spacing: 0.05em;
   border: none;
-  margin-top: 2%;
+  margin-top: 1%;
+  margin-bottom: 1%;
 }
 a:hover,
 a:focus,
@@ -151,15 +153,15 @@ div.cheese {
 
 
 }
-/*
+
 img.top {
-  border-radius: 2px;
+  /* border-radius: 2px;
   border-right: solid 2px black;
   border-top: solid 2px black;
   border-bottom: solid 2px black;
-  border-left: solid 2px black;
-  width:90%;height:75%;
-} */
+  border-left: solid 2px black; */
+  width:40%;height:5%;
+}
 
 /* img {
   border-radius: 2px;
@@ -215,10 +217,28 @@ li a:hover:not(.active) {
   /* width: 90%;
   height: 90%; */
     justify-content: center;
-
+    border-radius: 50%;
 }
+
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 75vh;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 10px;
+  /* padding: 1%; */
+  margin: 1%;
+  border-color: black;
+  border-style: inset;
+  border-width: 5px;
+  width: 70%;
+  margin: 0 auto;
+  border-radius: 5%;
+  padding-bottom: none;
+}
+
 .grid-container > div {
-  background-color: white;
+  background-color: black;
   /* text-align: center; */
   /* padding: 5px 0; */
   font-size: 20px;
@@ -226,18 +246,9 @@ li a:hover:not(.active) {
   border-top: solid 2px black;
   border-bottom: solid 2px black;
   border-left: solid 2px black; */
-  width: 150px;
-  height: 150px;
+  width: 100px;
+  height: 100px;
   /* align-items: auto; */
   justify-content: space-evenly;
   /* border-radius: 25px;
 }
-
-/* #blank {
-  background-color: green;
-  border-right: solid 2px green;
-  border-top: solid 2px green;
-  border-bottom: solid 2px green;
-  border-left: solid 2px green;
-  border-radius: 25px;
-} */
