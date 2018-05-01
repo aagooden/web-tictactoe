@@ -108,7 +108,6 @@ puts "The player piece from play method is #{player.piece}"
 
 
           if player.check_winner == true
-              # puts "Congratulations #{player.name}, you WIN!!!!!"
               player.increase_score
 
               return player.name, @player1.name, @player1.score, @player2.name, @player2.score, "winner"
@@ -127,36 +126,6 @@ puts "The player piece from play method is #{player.piece}"
     @player1.positions=([])
     @player2.positions=([])
   end
-
-      #
-          # if player.check_winner == true
-          #     puts "Congratulations #{player.name}, you WIN!!!!!"
-          #     player.increase_score
-          #     break
-          # elsif @board.check_tie
-          #     puts "That one was a tie!"
-          #     break
-          # end
-      # end
-      #     puts "The current score is..."
-      #     puts ""
-      #     puts "#{@player1.name}: #{@player1.score}"
-      #     puts "#{@player2.name}: #{@player2.score}"
-      #     puts ""
-      #     puts "Would you like to play again? (y or n)"
-      # loop do
-      #     again = gets.chomp
-      #
-      #     if again == "n"
-      #         break
-      #     elsif again == "y"
-      #         @board = Board.new
-      #         @player1.positions=([])
-      #         @player2.positions=([])
-      #         play
-      #     end
-      #     break
-      # end
 
 end
 
@@ -249,7 +218,6 @@ class Player
         winning_combinations = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [6,4,2]]
         winning_combinations.each do |group|
             contain = 0
-
             group.each do |num|
               if positions.include?(num)
                 contain+=1
@@ -315,7 +283,7 @@ class Computer < Player
     forks = []
     positions = []
     possible =[]
-    # puts "Here is overall_status in fork_move #{overall_status}"
+    puts "Here is overall_status in fork_move #{overall_status}"
     # puts "Here is the piec I'm deleting this cycle #{piece}"
     # puts "The other piece is #{opponent_piece}"
     overall_status.each do |temp|
@@ -324,14 +292,14 @@ class Computer < Player
           forks.push(group)
       end
     end
-    # puts "Here is the temp array from fork move #{forks}"
+    puts "Here is the temp array from fork move #{forks}"
 
     forks.each do |element|
       element.each do |n|
         positions.push(n)
       end
     end
-    # puts "Here are the positions in fork_move #{positions}"
+    puts "Here are the positions in fork_move #{positions}"
 
     #construct an array of possible fork moves
     for x in (1..9) do
@@ -340,14 +308,14 @@ class Computer < Player
         possible.push(x)
       end
     end
-    # puts "Here are the possible fork moves #{possible}"
+    puts "Here are the possible fork moves #{possible}"
 
     if possible.empty?
-      # puts "Here is the move from fork_move #{move}"
+      puts "Here is the move from fork_move #{move}"
       return move
     else
       move = possible.first
-      # puts "Here is the move form fork_move #{move}"
+      puts "Here is the move form fork_move #{move}"
       return move
     end
 
@@ -371,11 +339,11 @@ class Computer < Player
         positions.push(n)
       end
     end
-    # puts "Here are possible two_in_a_row positions before deleting #{positions}"
+    puts "Here are possible two_in_a_row positions before deleting #{positions}"
 
     positions = positions - [piece]
     # positions = positions - [move]
-    # puts "Here are the possible two_in_a_row positions #{positions}"
+    puts "Here are the possible two_in_a_row positions #{positions}"
     return positions
 
   end
@@ -394,14 +362,14 @@ class Computer < Player
           forks.push(group)
       end
     end
-    # puts "Here is the temp array from fork_block #{forks}"
+    puts "Here is the temp array from fork_block #{forks}"
 
     forks.each do |element|
       element.each do |n|
         positions.push(n)
       end
     end
-    # puts "Here are the positions in fork_block #{positions}"
+    puts "Here are the positions in fork_block #{positions}"
 
     #construct an array of possible fork moves...possible fork moves are any repeats in the array
     for x in (1..9) do
@@ -412,7 +380,7 @@ class Computer < Player
       end
 
     end
-      # puts "Here are the possible fork block moves #{possible}"
+      puts "Here are the possible fork block moves #{possible}"
 
     if possible.length == 1
       #If there is only one possible fork for the opponent, the player should block it.
@@ -423,8 +391,8 @@ class Computer < Player
       # Otherwise, the player should block any forks in any way that simultaneously allows them to create two in a row...
       #the following function call finds possible two_in_a_row moves
       two_in_a_row = create_two_in_a_row(overall_status, move, piece, opponent_piece)
-      # puts "Here are the two_in_a_row moves #{two_in_a_row}"
-      # puts "Here is move after two_in_a_row is called #{move}"
+      puts "Here are the two_in_a_row moves #{two_in_a_row}"
+      puts "Here is move after two_in_a_row is called #{move}"
     else
       # puts "Here is move from fork_block...should be nothing #{move}"
       return move
@@ -450,7 +418,7 @@ class Computer < Player
         move = num
         two_in_a_row = two_in_a_row - [num]
       end
-      # puts "This is two_in_a_row after deleting the possible fork_block moves #{two_in_a_row}"
+      puts "This is two_in_a_row after deleting the possible fork_block moves #{two_in_a_row}"
     end
 
     # puts "This is move #{move}"
@@ -614,61 +582,38 @@ class Computer < Player
           overall_status.push(temp)
       end
 
+        # These method calls, call each individual method that makes up the "unbeatable" strategy for the computer
+        if move == ""
+          move = winning_move(overall_status, move)
+        end
 
-    # The results of these calls are actually in the methods array...not the method calls themselves.
-    # This eliminates multiple if statements.
-    # methods = [
-    #   winning_move(overall_status, move),
-    #   block(overall_status, move),
-    #   fork_move(overall_status, move, self.piece, @opponent_piece),
-    #   fork_block(overall_status, move, self.piece, @opponent_piece),
-    #   play_center(board,move),
-    #   play_opposite_corner(board, move, self.piece, @opponent_piece),
-    #   empty_corner(board, move)
-    #           ]
-    #   methods.each do |m|
-    #     if m == ""
-    #       puts "#{m} returns nothing"
-    #     else
-    #       puts "#{m} returns something"
-    #       move = m
-    #       break
-    #     end
-    #   end
+        if move == ""
+          move = block(overall_status, move)
+        end
 
+        if move == ""
+          move = fork_move(overall_status, move, self.piece, @opponent_piece)
+        end
 
-          # These method calls, call each individual method that makes up the "unbeatable" strategy for the computer
-          if move == ""
-            move = winning_move(overall_status, move)
-          end
+        if move == ""
+          move = fork_block(overall_status, move, self.piece, @opponent_piece)
+        end
 
-          if move == ""
-            move = block(overall_status, move)
-          end
+        if move == ""
+          move = play_center(board,move)
+        end
 
-          if move == ""
-            move = fork_move(overall_status, move, self.piece, @opponent_piece)
-          end
+        if move == ""
+          move = play_opposite_corner(board, move, self.piece, @opponent_piece)
+        end
 
-          if move == ""
-            move = fork_block(overall_status, move, self.piece, @opponent_piece)
-          end
+        if move == ""
+          move = empty_corner(board, move)
+        end
 
-          if move == ""
-            move = play_center(board,move)
-          end
-
-          if move == ""
-            move = play_opposite_corner(board, move, self.piece, @opponent_piece)
-          end
-
-          if move == ""
-            move = empty_corner(board, move)
-          end
-
-          if move == ""
-            move = empty_edge(board,move)
-          end
+        if move == ""
+          move = empty_edge(board,move)
+        end
 
     # puts "Here is the final move return #{move}"
     return move

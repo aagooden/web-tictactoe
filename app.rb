@@ -33,6 +33,7 @@ end
 
 get '/move' do
 	current_move = params[:move]
+
 	#Check to see if current_move has already been played...if so, redirect back to board for another try
 	puts "#{$game.board_state.include?(current_move)}"
 	if $game.board_state.include?(current_move.to_i) == false
@@ -53,6 +54,7 @@ get '/move' do
 		session[:player1_score] = player[2]
 		session[:player2_name] = player[3]
 		session[:player2_score] = player[4]
+		session[:win_tie] = player[5]
 		redirect "/winner"
 	end
 
@@ -75,6 +77,7 @@ get '/move' do
 		session[:player1_score] = player[2]
 		session[:player2_name] = player[3]
 		session[:player2_score] = player[4]
+		session[:win_tie] = player[5]
 		redirect "/winner"
 	end
 	erb :board
@@ -87,6 +90,11 @@ end
 
 
 get "/winner" do
+	if session[:win_tie] == "winner"
+		session[:message1] = "Way to go #{session[:winner]}, YOU WIN!!"
+	else
+		session[:message1] = "Better luck next time...IT'S A TIE!"
+	end
 	erb :winner
 end
 

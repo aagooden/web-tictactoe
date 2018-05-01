@@ -9,20 +9,6 @@
 <%end %>
 <%end %>
 
-<!-- <script>
-clicks = []
-function disable_clicks() {
-  clicksLength = clicks.length;
-  for (i = 0; i < clicksLength; i++) {
-  var element = document.getElementById(clicks[i]);
-  console.log(element);
-  element.onclick = null
-  }
-}
-
-  disable_clicks();
-</script> -->
-
 <h1>It's Your Turn Dude!</h1>
 
 <div class="grid-container">
@@ -73,16 +59,8 @@ function disable_clicks() {
 </div>
 
 
-
 <script>
-
-// function click_tracker(element_id) {
-//   clicks.push(element_id);
-// }
-
-
-function playerMove(move) {
-
-  window.location = "/move?move=" + move;
-}
+  function playerMove(move) {
+    window.location = "/move?move=" + move;
+  }
 </script>

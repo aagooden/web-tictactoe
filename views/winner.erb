@@ -1,15 +1,11 @@
 
-<h1>It's a tie!</h1>
+<h1><%= session[:message1] %></h1>
 
-<h3>Way to go!!!</h3>
+<h2>The score is:</h2><br>
 
-<h2>The winner is<%= session[:winner] %></h2>
+<h2><%=session[:player1_name]%>: <%=session[:player1_score]%></h2>
 
-<h3>The score is</h3>
-
-<h2><%=session[:player1_name]%>: <%=session[:player1_score]%></h2><br>
-
-<h2><%=session[:player2_name]%>: <%=session[:player2_score]%></h2>
+<h2><%=session[:player2_name]%>: <%=session[:player2_score]%></h2><br>
 
 <form class="" action="again" method="post">
   <input type="submit" name="" value="Play Again">
