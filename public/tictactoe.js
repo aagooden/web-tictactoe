@@ -1,45 +1,104 @@
-// var box_counter = 1;
-// function check_blanks() {
-// 	var empty_counter = 0
-// 	var elements = document.getElementById("input_form").elements;
-// 	for (var i = 0, element; element = elements[i++];) {
-// 	console.log(element.value);
-// 	if (element.type === "text" && element.value === "")
-// 		empty_counter = empty_counter + 1;
-//
-// 	}
-// 	console.log("Blank Field counter is " + empty_counter);
-// 	return empty_counter
-//   }
-//
-// var submit_pairs = document.querySelector("#input_form");
-// submit_pairs.addEventListener("keydown", function() {
-// 	// text_boxes = document.getElementsByClassName("input_text")
-// 	console.log("Total boxes " + box_counter)
-//   	if (check_blanks() == 0){
-//   		// alert("Fill in the blanks first");
-//
-// 	var x = document.createElement("input");
-// 	x.setAttribute("type","text");
-// 	x.setAttribute("name","name[]");
-// 	x.setAttribute("placeholder","Another Name");
-// 	x.setAttribute("autocomplete", "off");
-// 	x.setAttribute("class", "input_text");
-// 	var form = document.getElementById("input_form");
-// 	form.appendChild(x);
-// 	box_counter += 1;
-// 		}
-// });
-//
-//
-//
-// var get_pairs = document.querySelector("#get_pairs");
-// get_pairs.addEventListener("click", function() {
-// 	// alert("Hello");
-//
-// 	// if (count < 1) {
-// 	// 	alert("You must enter at least two names");
-// 	// }else{
-// 	var x = document.querySelector("#get_pairs");
-// 	x.setAttribute("type","submit");
-// });
+
+// This function keeps track of whether the last number of players selected was one or two players...then routes to correct function for dynamic delete
+input_state = "zero";
+function reset_page(option) {
+  console.log(input_state);
+  if (input_state === "one" ) {
+    console.log("input state is 1")
+    reset_one_player();
+  } else if (input_state === "two"){
+    console.log("input state is 2")
+    reset_two_player();
+  }
+  input_state = option
+}
+
+
+function reset_two_player() {
+    // If user changes between one and two players, this function deletes the two name input boxes that resulted from selecting "two player"
+  console.log("Hitting reset two player function");
+  var element = document.getElementById("player1_name");
+  element.parentNode.removeChild(element);
+  var element = document.getElementById("player2_name");
+  element.parentNode.removeChild(element);
+}
+
+
+function reset_one_player() {
+  // If user changes between one and two players, this function deletes name input box, difficulty level message, and difficulty dropdown menu
+  var element = document.getElementById("player_name");
+  element.parentNode.removeChild(element);
+
+  var message = document.getElementById('difficulty_message');
+  message.innerHTML = "";
+
+  var element = document.getElementById("difficulty_dropdown");
+  element.parentNode.removeChild(element);
+}
+
+
+function onePlayer() {
+  // creates the name input box for 1 player
+  var player1Input = document.createElement("input");
+  player1Input.type = "text";
+  player1Input.name = "player1";
+  player1Input.id = "player_name";
+  player1Input.placeholder = "Player Name";
+  player1Input.required = "required";
+  document.getElementById('one_player_div').appendChild(player1Input);
+
+  var new_line = document.createElement('p');
+  document.getElementById('one_player_div').appendChild(new_line);
+}
+
+
+function twoPlayer() {
+  // creates the name input boxes for 2 players
+  var player1Input = document.createElement("input");
+  player1Input.type = "text";
+  player1Input.name = "player1";
+  player1Input.id = "player1_name";
+  player1Input.placeholder = "Player 1 Name";
+  player1Input.required = "required";
+  var inputDiv = document.getElementById('two_player_div')
+  inputDiv.appendChild(player1Input);
+
+  var player2Input = document.createElement("input");
+  player2Input.type = "text";
+  player2Input.name = "player2";
+  player2Input.id = "player2_name";
+  player2Input.placeholder = "Player 2 Name";
+  player2Input.required = "required";
+  inputDiv2 = document.getElementById('two_player_div');
+  inputDiv2.appendChild(player2Input);
+}
+
+
+function getDifficulty() {
+  // creates a message and difficulty levels dropdown for one player game
+  var message = document.getElementById('difficulty_message');
+  message.innerHTML = "Select a Difficulty Level";
+
+  var items = ['Random Opponent', 'Sequential Opponent', 'Unbeatable Opponent'];
+  var values = ['1', '2', '3'];
+  // creates a select element
+  var sel = document.createElement('select');
+  sel.setAttribute('name', 'difficulty');
+  sel.setAttribute('id', 'difficulty_dropdown');
+  // sets the options for the select element with items and values arrays
+      for (var i = 0; i < 3; i++) {
+        var opt = document.createElement('option');
+        opt.setAttribute('textContent', items[i]);
+        opt.setAttribute('value', values[i]);
+        sel.appendChild(opt);
+      }
+      // append the div with the select element
+  var levels = document.getElementById('difficulty_levels');
+  levels.appendChild(sel);
+  //assign text labels for dropdown menu
+  var s = document.getElementById('difficulty_dropdown');
+  s.children[0].innerText = "Random Opponent";
+  s.children[1].innerText = "Sequential Opponent";
+  s.children[2].innerText = "Unbeatable Opponent";
+
+}

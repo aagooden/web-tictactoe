@@ -33,7 +33,12 @@ end
 
 get '/move' do
 	current_move = params[:move]
-	# puts "From app /move The current move is #{current_move}"
+	#Check to see if current_move has already been played...if so, redirect back to board for another try
+	puts "#{$game.board_state.include?(current_move)}"
+	if $game.board_state.include?(current_move.to_i) == false
+		puts "GO TO BOARD"
+		redirect "/no_dice"
+	end
 
 	puts "Step 2, send move to game.play"
 	player = $game.play(current_move)
@@ -72,6 +77,11 @@ get '/move' do
 		session[:player2_score] = player[4]
 		redirect "/winner"
 	end
+	erb :board
+end
+
+
+get "/no_dice" do
 	erb :board
 end
 

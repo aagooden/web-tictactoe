@@ -9,11 +9,24 @@
 <%end %>
 <%end %>
 
+<!-- <script>
+clicks = []
+function disable_clicks() {
+  clicksLength = clicks.length;
+  for (i = 0; i < clicksLength; i++) {
+  var element = document.getElementById(clicks[i]);
+  console.log(element);
+  element.onclick = null
+  }
+}
+
+  disable_clicks();
+</script> -->
 
 <h1>It's Your Turn Dude!</h1>
 
 <div class="grid-container">
-  <div class="item1" onclick="playerMove(1)"
+  <div class="item1" id="grid_1" onclick="playerMove(1)"
     style="border-bottom: 5px solid white; border-right: 5px solid white;" >
     <img src="<%= images[0] %>" style="width:100px;height:100px;">
   </div>
@@ -62,7 +75,14 @@
 
 
 <script>
+
+// function click_tracker(element_id) {
+//   clicks.push(element_id);
+// }
+
+
 function playerMove(move) {
+
   window.location = "/move?move=" + move;
 }
 </script>

@@ -8,17 +8,17 @@ body {
   font-family: "Helvetica", Arial, sans-serif;
   padding: 0.5%;
   text-align: center;
-  font-size: 30px;
+  font-size: 20px;
   background-size: 100%;
 }
 
 h3 {
   text-align: center;
-  margin-top: 20px;
-  margin-bottom: 5px;
+  margin-top: 2%;
+  margin-bottom: 2%;
   /* font-family: 'Jacques Francois'; */
   font-family: serif;
-  font-size: 2vw;
+  font-size: 1vw;
   font-weight: bold;
   color: black;
       text-shadow:
@@ -30,11 +30,11 @@ h3 {
 
 h2 {
   text-align: center;
-  margin-top: 20px;
-  margin-bottom: 0px;
+  margin-top: 1%;
+  margin-bottom: 1%;
   font-family: serif;
   /* font-family: 'Jacques Francois'; */
-  font-size: 3vw;
+  font-size: 2vw;
   font-weight: bold;
   color: black;
       /* text-shadow:
@@ -47,10 +47,11 @@ h2 {
 
 h1 {
   text-align: center;
-  margin-top: 3%;
+  margin-top: 7%;
+  margin-bottom: none;
   font-family: serif;
   /* font-family: 'Jacques Francois'; */
-  font-size: 7svw;
+  font-size: 5svw;
   font-weight: bold;
   color: black;
     text-shadow:
@@ -94,8 +95,17 @@ textarea {
   font-size: 2vw;
 }
 
-div.box{
-  /* text-align: center; */
+
+#difficulty_dropdown {
+padding: 10px 0;
+text-indent: 10px;
+border: solid 2px #ddd;
+border-radius: 10px;
+font-size: 2vw;
+}
+
+/* div.box{
+  text-align: center;
   text-align: left;
   width: 40%;
   margin-left: auto;
@@ -110,10 +120,10 @@ div.box{
   margin-bottom: 2%;
   float: center;
   width: 50%;
-}
+} */
 
-div.center {
-  /* text-align: center; */
+/* div.center {
+  text-align: center;
   text-align: center;
   width: 40%;
   margin-left: auto;
@@ -128,12 +138,11 @@ div.center {
   margin-bottom: 2%;
   float: center;
   width: 50%;
-}
+} */
 
 
-div.cheese {
-  /* text-align: center; */
-
+/* div.cheese {
+  text-align: center;
   text-align: center;
   width: 40%;
   margin-left: auto;
@@ -149,9 +158,7 @@ div.cheese {
   float: center;
   width: 80%;
   column-count: 2;
-
-
-}
+} */
 
 img.top {
   /* border-radius: 2px;
@@ -159,7 +166,7 @@ img.top {
   border-top: solid 2px black;
   border-bottom: solid 2px black;
   border-left: solid 2px black; */
-  width:40%;height:5%;
+  width:30%;height:5%;
 }
 
 /* img {
@@ -222,31 +229,34 @@ li a:hover:not(.active) {
 .flex-container {
   display: flex;
   flex-direction: column;
-  min-height: 75vh;
+  min-height: 70vh;
   background-color: rgba(255, 255, 255, 0.95);
   border-radius: 10px;
   /* padding: 1%; */
-  margin: 1%;
+  padding-bottom: 1%;
   border-color: black;
   border-style: inset;
   border-width: 5px;
   width: 70%;
   margin: 0 auto;
   border-radius: 5%;
-  padding-bottom: none;
 }
 
 .grid-container > div {
   background-color: black;
+  border-top: solid 10px black;
+  border-right: solid 10px black;
+  border-bottom: solid 10px black;
+  border-left: solid 10px black;
   /* text-align: center; */
   /* padding: 5px 0; */
-  font-size: 20px;
+  font-size: 5px;
   /* border-right: solid 2px white;
   border-top: solid 2px black;
   border-bottom: solid 2px black;
   border-left: solid 2px black; */
-  width: 100px;
-  height: 100px;
+  width: 150pv;
+  height: 150pv;
   /* align-items: auto; */
   justify-content: space-evenly;
   /* border-radius: 25px;
