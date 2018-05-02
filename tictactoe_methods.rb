@@ -121,10 +121,11 @@ puts "The player piece from play method is #{player.piece}"
 
   end
 
-  def play_again
+  def play_again(turn)
     @board = Board.new
     @player1.positions=([])
     @player2.positions=([])
+    @turn = turn
   end
 
 end

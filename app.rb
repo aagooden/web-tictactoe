@@ -28,7 +28,8 @@ get '/game' do
 	$game = Game.new(session[:number_of_players], session[:player1], session[:player2], session[:difficulty])
 	session[:board_state] = $game.board_state
 	puts "Here is the board_state you were looking for #{session[:board_state]}"
-	erb :board
+	redirect "/again"
+	# erb :board
 end
 
 get '/move' do
@@ -60,7 +61,7 @@ get '/move' do
 
 
 	if player[0] == "Computer"
-	elsif Player && player[0] != "Computer" && $game.player2_class == Player
+	elsif player[0] != "Computer" && $game.player2_class == Player
 		puts "This is where player2 is human and NOT the computer...should go to erb :board at this point"
 		erb :board
 	else
@@ -99,21 +100,31 @@ get "/winner" do
 end
 
 
+get "/again" do
+	if session[:number_of_players] == "1"
+		session[:player2] = "Computer"
+	end
+	erb :again
+end
+
+
 post "/again" do
-	#Check that player2 is Computer AND player1 went last
-	if $game.player2_class == Computer && $game.turn == false
-		puts "Player2 is class Computer and player1 went las...game.turn is equal to false"
-		$game.play_again
+	first_move = params[:first_move]
+
+	# Check that player2 is the Computer AND player2 is supposed to go first in the next game
+	if $game.player2_class == Computer && first_move == "player2"
+		$game.play_again(false)
 		session[:board_state] = $game.board_state
-		$game.play(10) #10 is just a placeholder for calling $game.play
+		$game.play(10) #10 is just a placeholder for calling $game.play on the computer's turn
 		erb :board
 	else
-		$game.play_again
+		if first_move == "player2"
+			turn = false
+		else
+			turn = true
+		end
+		$game.play_again(turn)
 		session[:board_state] = $game.board_state
 		erb :board
 	end
-end
-
-get "/again" do
-	erb :board
 end
