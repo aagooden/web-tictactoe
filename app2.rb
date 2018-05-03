@@ -5,6 +5,7 @@ require_relative "tictactoe_methods.rb"
 enable :sessions
 
 
+
 get "/" do
 	erb :welcome
 end
@@ -23,7 +24,6 @@ post '/play' do
 	redirect "/game"
 end
 
-
 get '/game' do
 	session[:game] = Game.new(session[:number_of_players], session[:player1], session[:player2], session[:difficulty])
 	session[:board_state] = session[:game].board_state
@@ -31,7 +31,6 @@ get '/game' do
 	redirect "/again"
 	# erb :board
 end
-
 
 get '/move' do
 	current_move = params[:move]
@@ -49,7 +48,7 @@ get '/move' do
 	puts "Step 4, update board_state with the game board state which is #{session[:game].board_state}"
 	session[:board_state] = session[:game].board_state
 
-	#If last move created a winner or a tie, redirect to /winner
+#If last move created a winner or a tie, redirect to /winner
 	if player[5] == "winner" || player[5] == "tie"
 		session[:winner] = player[0]
 		session[:player1_name] = player[1]
@@ -72,7 +71,7 @@ get '/move' do
 	end
 
 
-	# If last move created a winner or a tie, redirect to /winner
+#If last move created a winner or a tie, redirect to /winner
 	if player[5] == "winner" || player[5] == "tie"
 		session[:winner] = player[0]
 		session[:player1_name] = player[1]
@@ -82,11 +81,12 @@ get '/move' do
 		session[:win_tie] = player[5]
 		redirect "/winner"
 	end
-	redirect "/board"end
+	erb :board
+end
 
 
 get "/no_dice" do
-	redirect "/board"
+	erb :board
 end
 
 
@@ -96,18 +96,6 @@ get "/winner" do
 	else
 		session[:message1] = "Better luck next time...IT'S A TIE!"
 	end
-	# creates an array of images to use in constructing the board
-	images = []
-	session[:board_state].each do |position|
-	if position.is_a?Integer
-	  images.push("blank.jpg")
-	elsif position == "X"
-	  images.push("x.png")
-	elsif position == "O"
-	  images.push("o.png")
-	end
-	end
-	session[:images] = images
 	erb :winner
 end
 
@@ -120,23 +108,6 @@ get "/again" do
 end
 
 
-get "/board" do
-	# creates an array of images to use in constructing the board
-	images = []
-	session[:board_state].each do |position|
-	if position.is_a?Integer
-	  images.push("blank.jpg")
-	elsif position == "X"
-	  images.push("x.png")
-	elsif position == "O"
-	  images.push("o.png")
-	end
-	end
-	session[:images] = images
-	erb :board
-end
-
-
 post "/again" do
 	first_move = params[:first_move]
 
@@ -145,7 +116,7 @@ post "/again" do
 		session[:game].play_again(false)
 		session[:board_state] = session[:game].board_state
 		session[:game].play(10) #10 is just a placeholder for calling session[:game].play on the computer's turn
-		redirect "/board"
+		erb :board
 	else
 		if first_move == "player2"
 			turn = false
@@ -154,6 +125,6 @@ post "/again" do
 		end
 		session[:game].play_again(turn)
 		session[:board_state] = session[:game].board_state
-		redirect "/board"
+		erb :board
 	end
 end

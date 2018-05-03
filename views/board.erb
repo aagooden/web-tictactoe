@@ -1,17 +1,16 @@
-<!-- creates an array of images to use in constructing the board below... -->
-<% images = [] %>
-<%session[:board_state].each do |position| %>
-<%if position.is_a?Integer %>
-  <%images.push("blank.jpg") %>
-<%elsif position == "X" %>
-  <%images.push("x.png") %>
-<%elsif position == "O" %>
-  <%images.push("o.png") %>
-<%end %>
-<%end %>
+
+<%images = session[:images]%>
 
 <% quips = ["Think OUTSIDE the box!", "You are a Tic Tac Toe MASTER!!!", "May the FORK be with you!", "Be the board!", "Take no prisoners!!!", "You are ROCKING it!!", "Hello...Play in a blank space!", "It's YOUR turn Dude!", "Something to prove?  Make a move!!!"]%>
-<h1><%=quips.sample%></h1>
+
+<%if session[:game].turn == true%>
+<%current_player = session[:player1]%>
+<%else%>
+<%current_player = session[:player2]%>
+<%end%>
+
+<h2><%=current_player%>: It's your turn.</h2>
+<h2><%=quips.sample%></h2>
 
 <div class="grid-container">
   <div class="item1" id="grid_1" onclick="playerMove(1)"
