@@ -104,61 +104,10 @@ border-radius: 10px;
 font-size: 2vw;
 }
 
-/* div.box{
-  text-align: center;
-  text-align: left;
-  width: 40%;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: #fff;
-  padding: 4%;
-  border-radius: 5px;
-  border-right: solid 5px black;
-  border-top: solid 5px black;
-  border-bottom: solid 5px black;
-  border-left: solid 5px black;
-  margin-bottom: 2%;
-  float: center;
-  width: 50%;
-} */
-
-/* div.center {
-  text-align: center;
-  text-align: center;
-  width: 40%;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: #fff;
-  padding: 4%;
-  border-radius: 5px;
-  border-right: solid 5px black;
-  border-top: solid 5px black;
-  border-bottom: solid 5px black;
-  border-left: solid 5px black;
-  margin-bottom: 2%;
-  float: center;
-  width: 50%;
-} */
 
 
-/* div.cheese {
-  text-align: center;
-  text-align: center;
-  width: 40%;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: #fff;
-  padding: 7%;
-  border-radius: 5px;
-  border-right: solid 5px black;
-  border-top: solid 5px black;
-  border-bottom: solid 5px black;
-  border-left: solid 5px black;
-  margin-bottom: 2%;
-  float: center;
-  width: 80%;
-  column-count: 2;
-} */
+
+
 
 img.top {
   /* border-radius: 2px;
@@ -177,7 +126,6 @@ img.top {
   border-left: solid 2px black;
   width:75px;height:75px;
 } */
-
 
 
 ul {

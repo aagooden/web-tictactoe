@@ -2,12 +2,9 @@
 // This function keeps track of whether the last number of players selected was one or two players...then routes to correct function for dynamic delete
 input_state = "zero";
 function reset_page(option) {
-  console.log(input_state);
   if (input_state === "one" ) {
-    console.log("input state is 1")
     reset_one_player();
   } else if (input_state === "two"){
-    console.log("input state is 2")
     reset_two_player();
   }
   input_state = option
@@ -16,7 +13,6 @@ function reset_page(option) {
 
 function reset_two_player() {
     // If user changes between one and two players, this function deletes the two name input boxes that resulted from selecting "two player"
-  console.log("Hitting reset two player function");
   var element = document.getElementById("player1_name");
   element.parentNode.removeChild(element);
   var element = document.getElementById("player2_name");
@@ -45,6 +41,7 @@ function onePlayer() {
   player1Input.id = "player_name";
   player1Input.placeholder = "Player Name";
   player1Input.required = "required";
+  player1Input.autofocus = "autofocus";
   document.getElementById('one_player_div').appendChild(player1Input);
 
   var new_line = document.createElement('p');
@@ -60,6 +57,7 @@ function twoPlayer() {
   player1Input.id = "player1_name";
   player1Input.placeholder = "Player 1 Name";
   player1Input.required = "required";
+  player1Input.autofocus = "autofocus";
   var inputDiv = document.getElementById('two_player_div')
   inputDiv.appendChild(player1Input);
 

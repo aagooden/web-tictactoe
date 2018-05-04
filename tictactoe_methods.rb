@@ -38,44 +38,38 @@ class Game
   end
 
   def play(current_move)
-      # @board.render
-      player = ""
 
-          if @turn == true
-              player = @player1
-          else
-              player = @player2
+    player = ""
 
-          end
+    if @turn == true
+        player = @player1
+    else
+        player = @player2
 
-				if player.class == Computer
-          # puts "The difficulty level is #{@difficulty}"
-            if @difficulty == "1"
-              position = player.random_move(@board.state, @player2.piece, @player1.piece)
-            elsif @difficulty == "2"
-              position = player.sequential_move(@board.state, @player2.piece, @player1.piece)
-            elsif @difficulty == "3"
-              position = player.move(@board.state)
-            end
+    end
 
-				else
-          position = current_move
-          position = position.to_i
-				end
+		if player.class == Computer
+      position =
+        [player.random_move(@board.state, @player2.piece, @player1.piece),
+        player.sequential_move(@board.state, @player2.piece, @player1.piece),
+        player.move(@board.state)][@difficulty.to_i - 1]
+		else
+      position = current_move
+      position = position.to_i
+		end
 
-          @board.change_state(player.piece, position)
-          player.update_positions(position)
+    @board.change_state(player.piece, position)
+    player.update_positions(position)
 
-    @board.render
     @turn = !@turn
 
     if player.check_winner == true
       player.increase_score
-
       return player.name, @player1.name, @player1.score, @player2.name, @player2.score, "winner"
     elsif @board.check_tie
       return player.name, @player1.name, @player1.score, @player2.name, @player2.score, "tie"
     end
+
     return player.name, @player1.name, @player1.score, @player2.name, @player2.score, "none"
   end
 
@@ -115,25 +109,8 @@ class Board
         @state.all? {|i| i.is_a?(String) }
     end
 
-    def render
-        p = @state
-        puts ''
-        puts ''
-        puts ''
-
-        puts "                     | #{p[0]}| #{p[1]}| #{p[2]}|"
-        puts "                     ---+--+---"
-        puts "                     | #{p[3]}| #{p[4]}| #{p[5]}|"
-        puts "                     ---+--+---"
-        puts "                     | #{p[6]}| #{p[7]}| #{p[8]}|"
-
-        puts ''
-        puts ''
-        puts ''
-
-    end
-
 end
+
 
 class Player
 
@@ -168,20 +145,20 @@ class Player
     end
 
     def check_winner
-        winner = false
-        winning_combinations = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [6,4,2]]
-        winning_combinations.each do |group|
-            contain = 0
-            group.each do |num|
-              if positions.include?(num)
-                contain+=1
-            	end
-              if contain == 3
-                winner = true
-              end
-            end
+      winner = false
+      winning_combinations = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [6,4,2]]
+      winning_combinations.each do |group|
+        contain = 0
+        group.each do |num|
+          if positions.include?(num)
+            contain+=1
+        	end
+          if contain == 3
+            winner = true
+          end
         end
-        return winner
+      end
+      return winner
     end
 
 end
@@ -278,10 +255,12 @@ class Computer < Player
     return positions
   end
 
+
   def fork_block(overall_status, move, piece, opponent_piece)
     forks = []
     positions = []
     possible =[]
+    two_in_a_row_block = []
 
     #find all the POSSIBLE opponent fork moves.  These are any three spaces in a row that contains one opponent piece.  This should create an array of arrays with two positions each because the position containing the opponent piece is deleted.
     overall_status.each do |temp|
@@ -305,7 +284,6 @@ class Computer < Player
       if num > 1
         possible.push(x)
       end
-
     end
 
     #If there is only one possible fork for the opponent, the player should block it.
@@ -316,37 +294,47 @@ class Computer < Player
     elsif possible.length > 1
       #the following function call finds possible two_in_a_row moves
       two_in_a_row = create_two_in_a_row(overall_status, move, piece, opponent_piece)
+      puts "This is two_in_a_row #{two_in_a_row}"
     else
       return move
     end
 
     # Otherwise, the player should block any forks in any way that simultaneously allows them to create two in a row...
     #This is accomplished by deleting the fork_block moves from the possible moves below
+    puts "This is possible you are looking for #{possible}"
     possible.each do |num|
       if two_in_a_row.include?(num)
         # puts "This is two_in_a_row when comparing to possible fork_block moves #{two_in_a_row}"
-        move = num
-        two_in_a_row = two_in_a_row - [num]
+        two_in_a_row_block.push(num)
       end
+    end
+
+    if two_in_a_row_block.length > 1
+      two_in_a_row = two_in_a_row - two_in_a_row_block
+        puts "%%%%%%%%%%%%%%%%%%%% It was equal to more than 1"
+        puts "This is two_in_a_row after deleting multiple fork moves #{two_in_a_row}"
     end
 
     #This is two_in_a_row without possible fork_block moves
     #if there are more than one possibility left, just pick one randomly
     move = two_in_a_row.sample
+    puts "This is the move your looking for #{move}"
     return move
 
   end
 
-  #if center is available, play there
+
   def play_center(board,move)
+  #if center is available, play there
     if board[4] == 5
       move = 5
     end
     return move
   end
 
-    #if opposite corner is available (opposite from corner played by opponent) play there
+
   def play_opposite_corner(board,move, piece, opponent_piece)
+  #if opposite corner is available (opposite from corner played by opponent) play there
     corner_opposites = [[0,9],[2,7],[8,1],[6,3]]
     corner_opposites.each do |pair|
       if board[pair[0]] == opponent_piece && board[pair[1]-1] == pair[1]
@@ -356,8 +344,9 @@ class Computer < Player
     return move
   end
 
-  #if corner is empty, play there
+
   def empty_corner(board, move)
+    #if corner is empty, play there
     corners = [0, 2, 6, 8]
     corners.each do |corner|
       if board[corner] == corner + 1
@@ -367,9 +356,9 @@ class Computer < Player
     return move
   end
 
-  #if corner is empty, play there
+
   def empty_edge(board, move)
-    # puts "EMPTY_EDGE"
+  #if corner is empty, play there
     edges = [1, 3, 5, 7]
     edges.each do |edge|
       if board[edge] == edge + 1
@@ -379,8 +368,9 @@ class Computer < Player
     return move
   end
 
-  #This function picks a random empty spot on the board and plays there
+
   def random_move(board_state, piece, opponent_piece)
+  #This function picks a random empty spot on the board and plays there
     @opponent_piece = opponent_piece
     move = ""
     # puts "WELCOME TO RANDOM MOVE...ENJOY YOUR STAY!"
@@ -412,7 +402,6 @@ class Computer < Player
   def sequential_move(board_state, piece, opponent_piece)
       @opponent_piece = opponent_piece
     move = ""
-    # puts "WELCOME TO SEQUENTIAL MOVE...ENJOY YOUR STAY!"
     board = board_state
     overall_status = []
     combos = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [6,4,2]]
@@ -463,38 +452,24 @@ class Computer < Player
           overall_status.push(temp)
       end
 
-        # These method calls, call each individual method that makes up the "unbeatable" strategy for the computer
-        if move == ""
-          move = winning_move(overall_status, move)
-        end
+    # These method calls, call each individual method that makes up the "unbeatable" strategy for the computer
+    computer_move =
+      [winning_move(overall_status, move),
+      block(overall_status, move),
+      fork_move(overall_status, move, self.piece, @opponent_piece),
+      fork_block(overall_status, move, self.piece, @opponent_piece),
+      play_center(board,move),
+      play_opposite_corner(board, move, self.piece, @opponent_piece),
+      empty_corner(board, move),
+      empty_edge(board,move)]
 
-        if move == ""
-          move = block(overall_status, move)
-        end
-
-        if move == ""
-          move = fork_move(overall_status, move, self.piece, @opponent_piece)
-        end
-
-        if move == ""
-          move = fork_block(overall_status, move, self.piece, @opponent_piece)
-        end
-
-        if move == ""
-          move = play_center(board,move)
-        end
-
-        if move == ""
-          move = play_opposite_corner(board, move, self.piece, @opponent_piece)
-        end
-
-        if move == ""
-          move = empty_corner(board, move)
-        end
-
-        if move == ""
-          move = empty_edge(board,move)
-        end
+    computer_move.each do |func|
+      if func == ""
+      else
+        move = func
+        break
+      end
+    end
 
     #Here is the final move
     return move
