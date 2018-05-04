@@ -227,7 +227,7 @@ class Computer < Player
     if possible.empty?
       return move
     else
-      move = possible.first
+      move = possible.sample
       return move
     end
 
