@@ -85,8 +85,8 @@ end
 
 class Board
 
-    def initialize
-        @state = [1,2,3,4,5,6,7,8,9]
+    def initialize(state=[1,2,3,4,5,6,7,8,9])
+        @state = state
     end
 
 		def state
@@ -294,14 +294,12 @@ class Computer < Player
     elsif possible.length > 1
       #the following function call finds possible two_in_a_row moves
       two_in_a_row = create_two_in_a_row(overall_status, move, piece, opponent_piece)
-      puts "This is two_in_a_row #{two_in_a_row}"
     else
       return move
     end
 
     # Otherwise, the player should block any forks in any way that simultaneously allows them to create two in a row...
     #This is accomplished by deleting the fork_block moves from the possible moves below
-    puts "This is possible you are looking for #{possible}"
     possible.each do |num|
       if two_in_a_row.include?(num)
         # puts "This is two_in_a_row when comparing to possible fork_block moves #{two_in_a_row}"
@@ -311,14 +309,11 @@ class Computer < Player
 
     if two_in_a_row_block.length > 1
       two_in_a_row = two_in_a_row - two_in_a_row_block
-        puts "%%%%%%%%%%%%%%%%%%%% It was equal to more than 1"
-        puts "This is two_in_a_row after deleting multiple fork moves #{two_in_a_row}"
     end
 
     #This is two_in_a_row without possible fork_block moves
     #if there are more than one possibility left, just pick one randomly
     move = two_in_a_row.sample
-    puts "This is the move your looking for #{move}"
     return move
 
   end

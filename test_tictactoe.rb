@@ -39,6 +39,52 @@ class Tictactoe_test < Minitest::Test
 		assert_equal(["X",2,3,4,5,6,7,8,9], function)
 	end
 
+
+	def test_check_winner_1
+		player = Player.new("Jack", "X", ["X",2,"O","O","O",6,"X","X","X"])
+		player.positions=([0,6,7,8])#player.positions uses index numbers instead of board space numbers
+		function = player.check_winner
+		assert_equal(true, function)
+	end
+
+	def test_check_winner_2
+		player = Player.new("Jack", "X", ["X","O","X",4,"X","O","O",8,"X"])
+		player.positions=([0,2,4,8])#player.positions uses index numbers instead of board space numbers
+		function = player.check_winner
+		assert_equal(true, function)
+	end
+
+
+	def test_check_board_position_1
+		board = Board.new(["X","O","X",4,"X","O","O",8,"X"])
+		function = board.check(4)
+		assert_equal(true, function)
+	end
+
+	def test_check_board_position_2
+		board = Board.new(["X","O","X",4,"X","O","O",8,"X"])
+		function = board.check(5)
+		assert_equal(false, function)
+	end
+
+	def test_check_board_position_3
+		board = Board.new(["X","O","X",4,"X","O","O",8,"X"])
+		function = board.check(8)
+		assert_equal(true, function)
+	end
+
+	def test_check_tie_1
+		board = Board.new(["X","O","X","O","X","O","X","O","X"])
+		function = board.check_tie
+		assert_equal(true, function)
+	end
+
+	def test_check_tie_2
+		board = Board.new(["X","X","X","X","X","X","X","X","X"])
+		function = board.check_tie
+		assert_equal(true, function)
+	end
+
 	def test_winning_move
 		@board=Board.new
 		state = ["O","X",3,"O","X","X",7,8,9]
@@ -209,6 +255,25 @@ class Tictactoe_test < Minitest::Test
 		@player2 = Computer.new("Computer", "O", @board)
 		function = @player2.empty_edge(state,"")
 		assert_equal(2, function)
+	end
+
+	def test_two_in_a_row_1
+		@board=Board.new
+		overall_status = [[1,2,"X"],["X","O",6],["O",8,9],[1,"X","O"],[2,"O",8],["X",6,9],[1,"O",9],["O","O","X"]]
+		@player1 = Player.new("Aaron", "X", @board)
+		@player2 = Computer.new("Computer", "O", @board)
+		function = @player2.create_two_in_a_row(overall_status, "", "O", "X")
+		assert_equal([8, 9, 2, 8, 1, 9], function)
+	end
+
+	def test_two_in_a_row_2
+		@board=Board.new
+		overall_status = [["X",2,3],[4,"O","X"],[7,8,9],["X",4,7],[2,"O",8],[3,"X",9],["X","O",9],[7,"O",3]]
+		@player1 = Player.new("Aaron", "X", @board)
+		@player2 = Computer.new("Computer", "O", @board)
+		function = @player2.create_two_in_a_row(overall_status, "", "O", "X")
+		puts function
+		assert_equal([2, 8, 7, 3], function)
 	end
 
 end
