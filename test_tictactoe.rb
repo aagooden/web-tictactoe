@@ -185,6 +185,18 @@ class Tictactoe_test < Minitest::Test
     assert_equal(true, contain)
   end
 
+	def test_fork_block_4
+		@board=Board.new
+		overall_status = [["X",2,3],[4,"X",6],[7,8,"O"],["X",4,7],[2,"X",8],[3,6,"O"],["X","X","O"],[7,"X",3]]
+		@player1 = Player.new("Aaron", "X", @board)
+		@player2 = Computer.new("Computer", "O", @board)
+		possible = [2,4,6,8]
+		actual = @player2.fork_block(overall_status, "", "O", "X")
+		puts "actual from test is #{actual}"
+		contain = possible.include?(actual)
+		assert_equal(true, contain)
+	end
+
 	def test_move_to_empty_corner
 		@board=Board.new
 		state = ["O",2,3,4,"X",6,7,8,9]

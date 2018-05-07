@@ -1,5 +1,4 @@
 
-
 class Game
 
   def initialize(number_of_players, player1, player2, difficulty)
